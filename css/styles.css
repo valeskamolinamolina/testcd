@@ -1,0 +1,369 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* =======================================
+       BOTÓN CV (MANTENIDO INTACTO)
+       ======================================= */
+    .btn-glass-cv {
+        @apply relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-body font-medium z-20;
+        @apply transition-colors duration-300 ease-in-out;
+        @apply bg-white/40 backdrop-blur-md border border-white/60 text-primary;
+        box-shadow: 0 4px 15px rgba(176, 0, 124, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-glass-cv:hover {
+        @apply bg-[#8C1F64] border-[#8C1F64] text-white;
+        box-shadow: 0 6px 20px rgba(140, 31, 100, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    html.dark .btn-glass-cv {
+        @apply bg-dark-surface-container-low/60 border-dark-primary text-dark-primary;
+        box-shadow: 0 4px 15px rgba(240, 95, 181, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
+
+    html.dark .btn-glass-cv:hover {
+        @apply bg-dark-primary border-dark-outline-variant text-dark-outline-variant;
+        box-shadow: 0 4px 20px rgba(240, 95, 181, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+
+    /* =======================================
+       TARJETAS BENTO: GLASS (CLARO) & HOLLOW (OSCURO)
+       ======================================= */
+    /* Estructura base física compartida */
+    .glass-panel {
+        /* 1. MODO CLARO (Glassmorphism intacto + Efecto de Escalado + Padding ajustado a p-6) */
+        @apply relative z-20 rounded-3xl p-6 backdrop-blur-xl border border-white/50 shadow-soft-layered transition-all duration-500 hover:-translate-y-2 hover:scale-105 hover:z-30 hover:shadow-soft-layered-hover;
+
+        /* 2. MODO OSCURO (Preparación Hollow) */
+        @apply dark:backdrop-blur-none dark:shadow-none dark:hover:shadow-none dark:border-solid;
+    }
+
+    /* 1. Variante Cromática: Género */
+    .glass-panel-secondary {
+        /* Light Mode */
+        @apply bg-secondary-container/60;
+        /* Dark Mode: Transparente, borde definido, hover de color tenue */
+        @apply dark:bg-transparent dark:border-dark-secondary/50 dark:hover:bg-dark-secondary/15;
+    }
+
+    /* 2. Variante Cromática: Divulgación Científica */
+    .glass-panel-surface {
+        @apply bg-surface-container-high/60;
+        @apply dark:bg-transparent dark:border-dark-primary/40 dark:hover:bg-dark-primary/15;
+    }
+
+    /* 3. Variante Cromática: Periodismo */
+    .glass-panel-light {
+        @apply bg-surface-container-lowest/60;
+        @apply dark:bg-transparent dark:border-dark-outline-variant/60 dark:hover:bg-dark-outline-variant/15;
+    }
+
+    /* 4. Variante Cromática: IA Generativa */
+    .glass-panel-gradient {
+        @apply bg-gradient-to-br from-primary-container/60 to-tertiary-container/60;
+        /* Anulamos el gradiente base en Dark Mode y ponemos el borde Hollow */
+        @apply dark:!bg-none dark:bg-transparent dark:border-dark-primary-container/60;
+        /* Al hacer hover, inyectamos un gradiente neón muy sutil */
+        @apply dark:hover:!bg-gradient-to-br dark:hover:from-dark-primary-container/20 dark:hover:to-dark-primary/10;
+    }
+
+    /* 5. Variante Cromática: Gestión Pública (NUEVA) */
+    .glass-panel-primary {
+        @apply bg-primary-container/40;
+        @apply dark:bg-transparent dark:border-dark-primary-container/50 dark:hover:bg-dark-primary-container/15;
+    }
+
+    /*
+     * FIX DE CONTRASTE (Solo Modo Oscuro):
+     * Como vaciamos el fondo de la tarjeta IA, el texto original quedaría invisible.
+     * Usamos CSS puro para forzar colores claros sobre la tarjeta hueca.
+     */
+    html.dark .glass-panel-gradient .dark\:text-dark-on-primary {
+        color: theme('colors.dark-on-surface') !important;
+    }
+
+    html.dark .glass-panel-gradient .dark\:text-dark-on-primary\/80 {
+        color: rgba(253, 236, 244, 0.8) !important;
+    }
+}
+
+/* Estilos extraídos de la etiqueta <style> del HTML */
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* =======================================================
+EFECTO LINTERNA: Textura de Puntos (Dot Pattern Overlay)
+======================================================= */
+.flashlight-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+    --x: 50vw;
+    --y: 50vh;
+    -webkit-mask-image: radial-gradient(circle 200px at var(--x) var(--y), black 10%, transparent 100%);
+    mask-image: radial-gradient(circle 200px at var(--x) var(--y), black 10%, transparent 100%);
+    transition: opacity 0.3s ease;
+}
+
+.light .flashlight-overlay {
+    background-image: radial-gradient(rgba(176, 0, 124, 0.15) 2px, transparent 2px);
+    background-size: 24px 24px;
+}
+
+.dark .flashlight-overlay {
+    display: none;
+}
+
+/* =======================================================
+   IDEA 2: EFECTO CROMADO SUAVE ANIMADO
+   ======================================================= */
+html.light .chrome-title {
+    background-image: linear-gradient(
+            110deg,
+            #b0007c 10%, #a23276 30%, #ffffff 45%, #ffd8e8 55%, #b0007c 70%, #963971 100%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: chromeShine 6s linear infinite;
+}
+
+@keyframes chromeShine {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}
+
+html.dark .chrome-title {
+    background-image: linear-gradient(
+            110deg,
+            #F05FB5 10%, #F59FCC 30%, #ffffff 45%, #F9CFE4 55%, #F05FB5 70%, #DE37A1 100%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: chromeShine 6s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(240, 95, 181, 0.5)) drop-shadow(0 0 16px rgba(240, 95, 181, 0.2));
+    will-change: filter, background-position;
+}
+
+/* =======================================================
+   IDEA 3: FONDOS OSCUROS MULTICAPA ESPACIALES
+   ======================================================= */
+html.dark body {
+    background-color: #260318 !important;
+    background-image:
+            radial-gradient(circle at 10% 10%, #3B0728 0%, transparent 40%),
+            radial-gradient(circle at 85% 40%, rgba(99, 19, 69, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 50% 90%, #3B0728 0%, transparent 45%),
+            radial-gradient(circle at 90% 5%, rgba(240, 95, 181, 0.05) 0%, transparent 25%) !important;
+    background-attachment: fixed !important;
+}
+
+html.dark section {
+    background-color: transparent !important;
+}
+
+/* =======================================================
+   IDEA 4: HOVER ILLUMINATION
+   ======================================================= */
+html.dark .dark\:bg-dark-surface-container-lowest::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+            circle at 50% 50%,
+            rgba(240, 95, 181, 0.12) 0%,
+            transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    z-index: 1;
+}
+
+html.dark .dark\:bg-dark-surface-container-lowest:hover::before {
+    opacity: 1;
+}
+
+/* =======================================================
+   IDEA 5: BOTONES "NEON-GLASS"
+   ======================================================= */
+html.dark #principal a[href="#trayectoria"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(240, 95, 181, 0.05) 100%) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(240, 95, 181, 0.4) !important;
+    color: #FDECF4 !important;
+    box-shadow: 0 0 15px rgba(240, 95, 181, 0.15), inset 0 0 12px rgba(240, 95, 181, 0.1) !important;
+    text-shadow: 0 0 8px rgba(240, 95, 181, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.dark #principal a[href="#trayectoria"]:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(240, 95, 181, 0.15) 100%) !important;
+    border-color: rgba(240, 95, 181, 0.8) !important;
+    box-shadow: 0 0 25px rgba(240, 95, 181, 0.4), inset 0 0 20px rgba(240, 95, 181, 0.25) !important;
+    transform: translateY(-3px) !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(240, 95, 181, 0.6);
+}
+
+/* =======================================================
+   IDEA 7: RUIDO DIGITAL SUTIL
+   ======================================================= */
+html.dark body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    mix-blend-mode: screen;
+}
+
+/* =======================================================
+   IDEA 6: MICROINTERACCIONES DE SCROLL (ANIMACIONES)
+   ======================================================= */
+/* Animación base por defecto (Entrada desde abajo) */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform;
+}
+
+/* Modificadores direccionales (Sobrescriben el eje Y por el eje X) */
+.reveal-on-scroll.reveal-from-left {
+    transform: translateX(-50px);
+}
+
+.reveal-on-scroll.reveal-from-right {
+    transform: translateX(50px);
+}
+
+/* Estado final visible para TODAS las direcciones (resetea los ejes X e Y) */
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Clases utilitarias de retraso */
+.reveal-delay-100 { transition-delay: 100ms; }
+.reveal-delay-200 { transition-delay: 200ms; }
+.reveal-delay-300 { transition-delay: 300ms; }
+.reveal-delay-400 { transition-delay: 400ms; }
+
+/* =======================================================
+   SLIDER CINEMÁTICO (HERO SECTION)
+   ======================================================= */
+/* 1. Clase base:
+  will-change le avisa al navegador que optimice estos atributos en la GPU para 60fps.
+  Duración total del ciclo: 7.5 segundos (3 imágenes x 2.5s cada fase).
+*/
+.cinematic-img {
+    opacity: 0;
+    transform: scale(1);
+    will-change: transform, opacity, filter;
+    animation: cinematicZoom 7.5s infinite;
+}
+
+/* 2. Delays (Desfase):
+  Separamos cada imagen por 2.5 segundos para crear la secuencia.
+*/
+.cinematic-img.img-1 { animation-delay: 0s; }
+.cinematic-img.img-2 { animation-delay: 2.5s; }
+.cinematic-img.img-3 { animation-delay: 5.0s; }
+
+/* 3. Keyframes (Matemática de la transición):
+  - 0% a 13.33% (1 seg): Entrada con Fade In y perdiendo el Blur.
+  - 13.33% a 33.33% (1.5 seg): Imagen 100% visible, haciendo zoom lento.
+  - 33.33% a 46.66% (1 seg): Salida con Fade Out y sumando Blur.
+  - 46.66% a 100% (3.5 seg): Imagen oculta esperando su siguiente turno.
+*/
+@keyframes cinematicZoom {
+    0% {
+        opacity: 0;
+        transform: scale(1);
+        filter: blur(8px);
+    }
+    13.33% {
+        opacity: 1;
+        transform: scale(1.03);
+        filter: blur(0px);
+    }
+    33.33% {
+        opacity: 1;
+        transform: scale(1.08);
+        filter: blur(0px);
+    }
+    46.66% {
+        opacity: 0;
+        transform: scale(1.12);
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.12);
+        filter: blur(8px);
+    }
+}
+
+/* Accesibilidad: Apagar animación si el usuario prefiere movimiento reducido en su SO */
+@media (prefers-reduced-motion: reduce) {
+    .cinematic-img {
+        animation: none;
+        opacity: 0;
+    }
+    .cinematic-img.img-1 {
+        opacity: 1; /* Muestra solo la primera imagen de forma estática */
+    }
+}
+
+/* =======================================================
+   HITOS PROFESIONALES
+   ======================================================= */
+
+/* Ocultar barra de scroll en el track de hitos */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+}
+
+/* CLASE DE ESTADO ACTIVO (Para la Fase 2 y 3) */
+/* Esta clase anula los estados base de las tarjetas cuando están en el foco */
+.cover-card.is-active {
+    @apply scale-100 opacity-100 grayscale-0 z-30;
+    filter: blur(0px);
+    /* Inyectamos las sombras premium que ya tenemos en el config */
+    @apply shadow-soft-layered-hover dark:shadow-neon-glow;
+}
+
+/* ==========================================================
+   ESCUDO COVER FLOW:
+   Evita que el hover de .glass-panel rompa la física de
+   las tarjetas inactivas (evita saltos bruscos).
+   ========================================================== */
+.cover-card:not(.is-active):hover {
+    /* Forzamos a que se mantenga pequeña y sin flotar */
+    transform: scale(0.9) translate(0, 0) !important;
+    /* Evitamos que dispare las sombras premium prematuramente */
+    box-shadow: none !important;
+    /* Opcional: Un cursor distinto para indicar que no es la principal */
+    cursor: pointer;
+}
